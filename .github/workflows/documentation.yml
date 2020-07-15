@@ -14,7 +14,7 @@ jobs:
         with:
           TARGET_PATHS: README.md
           MAX_HEADER_LEVEL: 3
-          COMMIT_MESSAGE: Update table of contents
+          COMMIT_MESSAGE: 'Docs: Update table of contents'
           PR_TITLE: Update table of contents (${PR_MERGE_REF})
       ##-- workflow-documentation-readme-steps --##
   ##-- workflow-documentation-jobs --##
