@@ -10,7 +10,7 @@ export class exampleGenerator {
   constructor(basePath = './') {
     this.basePath = path.normalize(basePath)
     const pkg: string = readFileSync(
-      path.join(basePath, 'package.json'),
+      path.join(this.basePath, 'package.json'),
       'utf-8'
     )
     this.pkg = JSON.parse(pkg)
@@ -79,10 +79,7 @@ export class exampleGenerator {
       )
         throw 'You need to specify a base JS file to convert from'
 
-      const matches = fileNamePath.match(/([^/]+)$/)
-      if (!matches) throw 'Cannot compute file name'
-
-      const fileName = matches[0]
+      const fileName = path.basename(fileNamePath)
       const title = fileName
         .replace(/[A-Z]/g, (m) => ` ${m.toLowerCase()}`)
         .replace(/^./i, (m) => `## ${m.toUpperCase()}`)
@@ -116,7 +113,7 @@ export class exampleGenerator {
 
         markdown[type] = markdown[type] + this.toMarkdown(targetJs, title)
 
-        const dir = path.join(this.basePath, target, type)
+        const dir = path.join(target, type)
         if (!existsSync(dir)) mkdirSync(dir, { recursive: true })
         writeFileSync(
           path.join(dir, fileName + writeExtension),
@@ -132,7 +129,7 @@ export class exampleGenerator {
     types.forEach((type) => {
       if (markdown[type]) {
         writeFileSync(
-          path.join(this.basePath, target, type, 'examples.md'),
+          path.join(target, type, 'examples.md'),
           markdown[type] as string,
           'utf-8'
         )
