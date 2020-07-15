@@ -374,7 +374,7 @@ describe('generator options', function () {
     ).toThrow(
       path.join(
         'examplesSrc',
-        'basicExample is not a recognized file name. PLease make sure it contains an extension.'
+        'basicExample is not a recognized file name. Please make sure it contains an extension.'
       )
     )
   })
