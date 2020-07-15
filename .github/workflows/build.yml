@@ -57,7 +57,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: test-output
-          path: .config/.coverage
+          path: ./examples
 
   publish:
     # Publish to codecov on master and tags / Publish to npm on tags

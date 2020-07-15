@@ -245,14 +245,14 @@ beforeEach(function () {
 })
 
 afterAll(function () {
-  rmdirSync('examples', { recursive: true })
+  //rmdirSync('examples', { recursive: true })
 })
 
 /**
  * Generator options
  */
 describe('generator options', function () {
-  it('generates all types', () => {
+  it.only('generates all types', () => {
     expect.assertions(8)
 
     examples.generate({
