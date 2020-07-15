@@ -16,7 +16,7 @@ Generate examples for using your library. This is very opinionated to work with 
 - [📜 License](#-license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-<!-- prettier-ignore-start -->
+<!-- prettier-ignore-end -->
 
 ## 💾 Installation
 
