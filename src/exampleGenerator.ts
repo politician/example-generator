@@ -1,5 +1,4 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
-import os from 'os'
 import path from 'path'
 
 export class exampleGenerator {
@@ -289,9 +288,7 @@ export class exampleGenerator {
    * Generate markdown
    */
   toMarkdown(source: string, title: string): string {
-    const formattedTitle = os.EOL.concat(title, os.EOL, os.EOL)
-    const formattedSource = os.EOL.concat(source, os.EOL)
-    return `${formattedTitle}\`\`\`js${formattedSource}\`\`\``
+    return `\n${title}\n\n\`\`\`js\n${source}\n\`\`\``
       .replace(/\/\*\*\n([\s\S]+?)\n \*\//g, '```\n/**\n$1\n */\n```js')
       .replace(/<!--\n([\s\S]+?)-->/g, '```\n$1\n```html\n')
       .replace(/^[/\s]\*[/\s*]/gm, '')
