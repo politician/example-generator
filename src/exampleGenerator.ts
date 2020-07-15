@@ -5,8 +5,10 @@ export class exampleGenerator {
   availableFormats: Array<formats> = ['esm', 'cjs', 'node-esm', 'iife']
   requirePattern = /const (.+) = require\('\.\.\/dist\/cjs\/?(.*)'\)$/gm
   pkg: packageJson
+  basePath: string
 
-  constructor(readonly basePath = './') {
+  constructor(basePath = './') {
+    this.basePath = path.normalize(basePath)
     const pkg: string = readFileSync(
       path.join(basePath, 'package.json'),
       'utf-8'
@@ -43,17 +45,13 @@ export class exampleGenerator {
      */
     const combinedSources: combinedSources = {}
 
-    sources.forEach((relativePath: string) => {
-      const absolutePath = path.join(this.basePath, relativePath)
-      const matches = absolutePath.match(/\/?([^/.]+)((\.\w+)+)$/)
+    sources.forEach((sourcePath: string) => {
+      const extMatch = sourcePath.match(/(\.\w+)+$/)
+      if (!extMatch)
+        throw `${sourcePath} is not a recognized file name. PLease make sure it contains an extension.`
+      const extension = extMatch[0]
 
-      if (!matches)
-        throw `${relativePath} is not a recognized file name. PLease make sure it contains an extension.`
-
-      const file = matches[0]
-      const name = matches[1]
-      const extension = matches[2]
-      const fileNamePath = absolutePath.replace(file, `/${name}`)
+      const fileNamePath = sourcePath.replace(extension, '')
 
       if (!Object.prototype.hasOwnProperty.call(combinedSources, fileNamePath))
         combinedSources[fileNamePath] = {
