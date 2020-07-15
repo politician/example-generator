@@ -1,3 +1,5 @@
+/* eslint-disable jest/no-focused-tests */
+
 import { exampleGenerator, formats } from '../src'
 import { existsSync, readFileSync, rmdirSync } from 'fs'
 import { format } from 'util'
