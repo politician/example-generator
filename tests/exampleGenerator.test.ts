@@ -264,33 +264,54 @@ describe('generator options', function () {
 
     // JS output
     expect(
-      readFileSync(path.join('examples', 'cjs', 'basicExample.js'), 'utf-8')
+      readFileSync(
+        path.join('examples', 'cjs', 'basicExample.js'),
+        'utf-8'
+      ).replace(/\r/g, '')
     ).toMatch(basicJs.cjs)
     expect(
-      readFileSync(path.join('examples', 'esm', 'basicExample.js'), 'utf-8')
+      readFileSync(
+        path.join('examples', 'esm', 'basicExample.js'),
+        'utf-8'
+      ).replace(/\r/g, '')
     ).toMatch(basicJs.esm)
     expect(
       readFileSync(
         path.join('examples', 'node-esm', 'basicExample.js'),
         'utf-8'
-      )
+      ).replace(/\r/g, '')
     ).toMatch(basicJs.nodeEsm)
     expect(
-      readFileSync(path.join('examples', 'iife', 'basicExample.html'), 'utf-8')
+      readFileSync(
+        path.join('examples', 'iife', 'basicExample.html'),
+        'utf-8'
+      ).replace(/\r/g, '')
     ).toMatch(basicJs.iife)
 
     // Markdown output
     expect(
-      readFileSync(path.join('examples', 'cjs', 'examples.md'), 'utf-8')
+      readFileSync(
+        path.join('examples', 'cjs', 'examples.md'),
+        'utf-8'
+      ).replace(/\r/g, '')
     ).toMatch(basicMd.cjs)
     expect(
-      readFileSync(path.join('examples', 'esm', 'examples.md'), 'utf-8')
+      readFileSync(
+        path.join('examples', 'esm', 'examples.md'),
+        'utf-8'
+      ).replace(/\r/g, '')
     ).toMatch(basicMd.esm)
     expect(
-      readFileSync(path.join('examples', 'node-esm', 'examples.md'), 'utf-8')
+      readFileSync(
+        path.join('examples', 'node-esm', 'examples.md'),
+        'utf-8'
+      ).replace(/\r/g, '')
     ).toMatch(basicMd.nodeEsm)
     expect(
-      readFileSync(path.join('examples', 'iife', 'examples.md'), 'utf-8')
+      readFileSync(
+        path.join('examples', 'iife', 'examples.md'),
+        'utf-8'
+      ).replace(/\r/g, '')
     ).toMatch(basicMd.iife)
   })
 
