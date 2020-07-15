@@ -54,11 +54,10 @@ jobs:
         run: yarn test
 
       - name: Upload test output
-        if: failure()
         uses: actions/upload-artifact@v2
         with:
           name: test-output
-          path: ./examples
+          path: .coverage
 
   publish:
     # Publish to codecov on master and tags / Publish to npm on tags

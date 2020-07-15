@@ -24,7 +24,7 @@ export class exampleGenerator {
     exportName,
     sources,
     target = path.join(this.basePath, 'examples'),
-    types = ['esm', 'cjs', 'node-esm', 'iife'],
+    types = this.availableFormats,
   }: options): void {
     /**
      * Prepare markdown
@@ -32,15 +32,12 @@ export class exampleGenerator {
     const markdown: markdown = {}
 
     types.forEach((type) => {
-      if (type === 'esm') markdown.esm = `# Using ES modules${os.EOL}`
-      else if (type === 'cjs')
-        markdown.cjs = `# Using CommonJS modules${os.EOL}`
+      if (type === 'esm') markdown.esm = `# Using ES modules\n`
+      else if (type === 'cjs') markdown.cjs = `# Using CommonJS modules\n`
       else if (type === 'iife')
-        markdown.iife = `# Using natively in the browser${os.EOL}`
+        markdown.iife = `# Using natively in the browser\n`
       else if (type === 'node-esm')
-        markdown[
-          'node-esm'
-        ] = `# Using native ES Modules in Node.js (12+)${os.EOL}`
+        markdown['node-esm'] = `# Using native ES Modules in Node.js (12+)\n`
       else throw `Target type ${type} not recognized`
     })
 
@@ -99,12 +96,12 @@ export class exampleGenerator {
           targetJs = readFileSync(
             fileNamePath + combinedSources[fileNamePath][type],
             'utf-8'
-          )
+          ).replace(/\r/g, '') // Normalize
         } else {
           const baseJs = readFileSync(
             fileNamePath + combinedSources[fileNamePath].base,
             'utf-8'
-          )
+          ).replace(/\r/g, '') // Normalize
 
           if (type === 'esm') targetJs = this.toEsm(baseJs)
           else if (type === 'node-esm') targetJs = this.toNodeEsm(baseJs)
@@ -213,12 +210,7 @@ export class exampleGenerator {
       throw 'No require statements found. Cannot convert to IIFE.'
 
     // Replace relative path with package name
-    iife = '<script type="text/javascript">'.concat(
-      os.EOL,
-      iife,
-      os.EOL,
-      '</script>'
-    )
+    iife = `<script type="text/javascript">\n${iife}\n</script>`
 
     requireStatements.forEach(([statement, imports, subPath]) => {
       let replacement
@@ -249,14 +241,14 @@ export class exampleGenerator {
     iife = iife
       .replace(
         /\/\*\*\r?\n([\s\S]+?)\r?\n \*\//g,
-        `</script>${os.EOL}<!--${os.EOL}$1${os.EOL} -->${os.EOL}<script type="text/javascript">`
+        `</script>\n<!--\n $1\n -->\n<script type="text/javascript">`
       )
       .replace(
         /<script type="text\/javascript">((\s+<script src=.+<\/script>)+)/g,
         '$1'
       )
       .replace(/<script type="text\/javascript">\s+<\/script>/g, '')
-      .replace(/(<\/script>\s+){2,}/g, `$1${os.EOL}`)
+      .replace(/(<\/script>\s+){2,}/g, `$1\n`)
       .replace(
         /(?:^\s*|<\/script>)(.*?)(?:<script type="text\/javascript">|\s*$)/gs,
         (m) => m.replace(/^\/\/\s*(.*)$/gm, '<!-- $1 -->')
@@ -300,16 +292,16 @@ export class exampleGenerator {
     const formattedTitle = os.EOL.concat(title, os.EOL, os.EOL)
     const formattedSource = os.EOL.concat(source, os.EOL)
     return `${formattedTitle}\`\`\`js${formattedSource}\`\`\``
-      .replace(/\/\*\*(\r?\n)([\s\S]+?)\r?\n \*\//g, '```$1/**$1$2$1 */$1```js')
-      .replace(/<!--(\r?\n)([\s\S]+?)-->/g, '```$1$2$1```html$1')
+      .replace(/\/\*\*\n([\s\S]+?)\n \*\//g, '```\n/**\n$1\n */\n```js')
+      .replace(/<!--\n([\s\S]+?)-->/g, '```\n$1\n```html\n')
       .replace(/^[/\s]\*[/\s*]/gm, '')
       .replace(/```(js|html)[\s]+```/gm, '')
       .replace(/```([\s\S]+?)```/g, (m) =>
         m
-          .replace(/^```(js|html)(\r?\n){2,}/, '```$1$2')
-          .replace(/(\r?\n)+```$/, '$1```$1')
+          .replace(/^```(js|html)\n{2,}/, '```$1\n')
+          .replace(/\n+```$/, '\n```\n')
       )
-      .replace(/(\r?\n){2,}/gm, '$1$1')
+      .replace(/\n{2,}/gm, '\n\n')
       .replace(/ +$/gm, '')
   }
 }
