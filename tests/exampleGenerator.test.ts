@@ -1,6 +1,7 @@
 import { exampleGenerator, formats } from '../src'
 import { existsSync, readFileSync, rmdirSync } from 'fs'
 import { format } from 'util'
+import path from 'path'
 
 const examples = new exampleGenerator()
 
@@ -240,11 +241,11 @@ import { exampleGenerator } from 'example-generator/dist/esm/exampleGenerator.js
  */
 
 beforeEach(function () {
-  rmdirSync('./examples', { recursive: true })
+  rmdirSync('examples', { recursive: true })
 })
 
 afterAll(function () {
-  //rmdirSync('./examples', { recursive: true })
+  rmdirSync('examples', { recursive: true })
 })
 
 /**
@@ -256,36 +257,39 @@ describe('generator options', function () {
 
     examples.generate({
       exportName: 'myPackage',
-      sources: ['examplesSrc/basicExample.js'],
+      sources: [path.join('examplesSrc', 'basicExample.js')],
     })
 
     // JS output
-    expect(readFileSync('examples/cjs/basicExample.js', 'utf-8')).toMatch(
-      basicJs.cjs
-    )
-    expect(readFileSync('examples/esm/basicExample.js', 'utf-8')).toMatch(
-      basicJs.esm
-    )
-    expect(readFileSync('examples/node-esm/basicExample.js', 'utf-8')).toMatch(
-      basicJs.nodeEsm
-    )
-    expect(readFileSync('examples/iife/basicExample.html', 'utf-8')).toMatch(
-      basicJs.iife
-    )
+    expect(
+      readFileSync(path.join('examples', 'cjs', 'basicExample.js'), 'utf-8')
+    ).toMatch(basicJs.cjs)
+    expect(
+      readFileSync(path.join('examples', 'esm', 'basicExample.js'), 'utf-8')
+    ).toMatch(basicJs.esm)
+    expect(
+      readFileSync(
+        path.join('examples', 'node-esm', 'basicExample.js'),
+        'utf-8'
+      )
+    ).toMatch(basicJs.nodeEsm)
+    expect(
+      readFileSync(path.join('examples', 'iife', 'basicExample.html'), 'utf-8')
+    ).toMatch(basicJs.iife)
 
     // Markdown output
-    expect(readFileSync('examples/cjs/examples.md', 'utf-8')).toMatch(
-      basicMd.cjs
-    )
-    expect(readFileSync('examples/esm/examples.md', 'utf-8')).toMatch(
-      basicMd.esm
-    )
-    expect(readFileSync('examples/node-esm/examples.md', 'utf-8')).toMatch(
-      basicMd.nodeEsm
-    )
-    expect(readFileSync('examples/iife/examples.md', 'utf-8')).toMatch(
-      basicMd.iife
-    )
+    expect(
+      readFileSync(path.join('examples', 'cjs', 'examples.md'), 'utf-8')
+    ).toMatch(basicMd.cjs)
+    expect(
+      readFileSync(path.join('examples', 'esm', 'examples.md'), 'utf-8')
+    ).toMatch(basicMd.esm)
+    expect(
+      readFileSync(path.join('examples', 'node-esm', 'examples.md'), 'utf-8')
+    ).toMatch(basicMd.nodeEsm)
+    expect(
+      readFileSync(path.join('examples', 'iife', 'examples.md'), 'utf-8')
+    ).toMatch(basicMd.iife)
   })
 
   it('generates selected types', () => {
@@ -293,25 +297,33 @@ describe('generator options', function () {
 
     examples.generate({
       exportName: 'myPackage',
-      sources: ['examplesSrc/basicExample.js'],
+      sources: [path.join('examplesSrc', 'basicExample.js')],
       types: ['esm'],
     })
 
     // JS output
-    expect(readFileSync('examples/esm/basicExample.js', 'utf-8')).toMatch(
-      basicJs.esm
-    )
-    expect(existsSync('examples/cjs/basicExample.js')).toBeFalsy()
-    expect(existsSync('examples/node-esm/basicExample.js')).toBeFalsy()
-    expect(existsSync('examples/iife/basicExample.js')).toBeFalsy()
+    expect(
+      readFileSync(path.join('examples', 'esm', 'basicExample.js'), 'utf-8')
+    ).toMatch(basicJs.esm)
+    expect(
+      existsSync(path.join('examples', 'cjs', 'basicExample.js'))
+    ).toBeFalsy()
+    expect(
+      existsSync(path.join('examples', 'node-esm', 'basicExample.js'))
+    ).toBeFalsy()
+    expect(
+      existsSync(path.join('examples', 'iife', 'basicExample.js'))
+    ).toBeFalsy()
 
     // Markdown output
-    expect(readFileSync('examples/esm/examples.md', 'utf-8')).toMatch(
-      basicMd.esm
-    )
-    expect(existsSync('examples/cjs/examples.md')).toBeFalsy()
-    expect(existsSync('examples/node-esm/examples.md')).toBeFalsy()
-    expect(existsSync('examples/iife/examples.md')).toBeFalsy()
+    expect(
+      readFileSync(path.join('examples', 'esm', 'examples.md'), 'utf-8')
+    ).toMatch(basicMd.esm)
+    expect(existsSync(path.join('examples', 'cjs', 'examples.md'))).toBeFalsy()
+    expect(
+      existsSync(path.join('examples', 'node-esm', 'examples.md'))
+    ).toBeFalsy()
+    expect(existsSync(path.join('examples', 'iife', 'examples.md'))).toBeFalsy()
   })
 
   it('generates in selected folder', () => {
@@ -319,7 +331,7 @@ describe('generator options', function () {
 
     examples.generate({
       exportName: 'myPackage',
-      sources: ['examplesSrc/basicExample.js'],
+      sources: [path.join('examplesSrc', 'basicExample.js')],
       target: 'examples2',
       types: ['esm'],
     })
@@ -344,7 +356,7 @@ describe('generator options', function () {
     expect(() =>
       examples.generate({
         exportName: 'myPackage',
-        sources: ['examplesSrc/basicExample.js'],
+        sources: [path.join('examplesSrc', 'basicExample.js')],
         types: ['unknown' as formats],
       })
     ).toThrow('Target type unknown not recognized')
@@ -356,11 +368,14 @@ describe('generator options', function () {
     expect(() =>
       examples.generate({
         exportName: 'myPackage',
-        sources: ['examplesSrc/basicExample'],
+        sources: [path.join('examplesSrc', 'basicExample')],
         types: ['esm'],
       })
     ).toThrow(
-      'examplesSrc/basicExample is not a recognized file name. PLease make sure it contains an extension.'
+      path.join(
+        'examplesSrc',
+        'basicExample is not a recognized file name. PLease make sure it contains an extension.'
+      )
     )
   })
 })
@@ -375,27 +390,37 @@ describe('overwriting output formats', function () {
     examples.generate({
       exportName: 'myPackage',
       sources: [
-        'examplesSrc/predefinedOutput.js',
-        'examplesSrc/predefinedOutput.cjs.js',
+        path.join('examplesSrc', 'predefinedOutput.js'),
+        path.join('examplesSrc', 'predefinedOutput.cjs.js'),
       ],
     })
 
     // JS output
-    expect(readFileSync('examples/cjs/predefinedOutput.js', 'utf-8')).toMatch(
-      readFileSync('examplesSrc/predefinedOutput.cjs.js', 'utf-8')
-    )
-    expect(readFileSync('examples/esm/predefinedOutput.js', 'utf-8')).toMatch(
-      predefinedJs.esm
+    expect(
+      readFileSync(path.join('examples', 'cjs', 'predefinedOutput.js'), 'utf-8')
+    ).toMatch(
+      readFileSync(path.join('examplesSrc', 'predefinedOutput.cjs.js'), 'utf-8')
     )
     expect(
-      readFileSync('examples/node-esm/predefinedOutput.js', 'utf-8')
+      readFileSync(path.join('examples', 'esm', 'predefinedOutput.js'), 'utf-8')
+    ).toMatch(predefinedJs.esm)
+    expect(
+      readFileSync(
+        path.join('examples', 'node-esm', 'predefinedOutput.js'),
+        'utf-8'
+      )
     ).toMatch(predefinedJs.nodeEsm)
     expect(
-      readFileSync('examples/iife/predefinedOutput.html', 'utf-8')
+      readFileSync(
+        path.join('examples', 'iife', 'predefinedOutput.html'),
+        'utf-8'
+      )
     ).toMatch(predefinedJs.iife)
 
     // Markdown output
-    expect(readFileSync('examples/cjs/examples.md', 'utf-8')).toMatch(
+    expect(
+      readFileSync(path.join('examples', 'cjs', 'examples.md'), 'utf-8')
+    ).toMatch(
       predefinedMd.cjs
         .replace(
           "const myPackage = require('example-generator')",
@@ -403,15 +428,15 @@ describe('overwriting output formats', function () {
         )
         .replace('myPackage.exampleGenerator()', 'exampleGenerator()')
     )
-    expect(readFileSync('examples/esm/examples.md', 'utf-8')).toMatch(
-      predefinedMd.esm
-    )
-    expect(readFileSync('examples/node-esm/examples.md', 'utf-8')).toMatch(
-      predefinedMd.nodeEsm
-    )
-    expect(readFileSync('examples/iife/examples.md', 'utf-8')).toMatch(
-      predefinedMd.iife
-    )
+    expect(
+      readFileSync(path.join('examples', 'esm', 'examples.md'), 'utf-8')
+    ).toMatch(predefinedMd.esm)
+    expect(
+      readFileSync(path.join('examples', 'node-esm', 'examples.md'), 'utf-8')
+    ).toMatch(predefinedMd.nodeEsm)
+    expect(
+      readFileSync(path.join('examples', 'iife', 'examples.md'), 'utf-8')
+    ).toMatch(predefinedMd.iife)
   })
 
   it('overwrites all outputs', () => {
@@ -420,19 +445,23 @@ describe('overwriting output formats', function () {
     examples.generate({
       exportName: 'myPackage',
       sources: [
-        'examplesSrc/predefinedOutput.js',
-        'examplesSrc/predefinedOutput.cjs.js',
+        path.join('examplesSrc', 'predefinedOutput.js'),
+        path.join('examplesSrc', 'predefinedOutput.cjs.js'),
       ],
       types: ['cjs'],
     })
 
     // JS output
-    expect(readFileSync('examples/cjs/predefinedOutput.js', 'utf-8')).toMatch(
-      readFileSync('examplesSrc/predefinedOutput.cjs.js', 'utf-8')
+    expect(
+      readFileSync(path.join('examples', 'cjs', 'predefinedOutput.js'), 'utf-8')
+    ).toMatch(
+      readFileSync(path.join('examplesSrc', 'predefinedOutput.cjs.js'), 'utf-8')
     )
 
     // Markdown output
-    expect(readFileSync('examples/cjs/examples.md', 'utf-8')).toMatch(
+    expect(
+      readFileSync(path.join('examples', 'cjs', 'examples.md'), 'utf-8')
+    ).toMatch(
       predefinedMd.cjs
         .replace(
           "const myPackage = require('example-generator')",
@@ -448,7 +477,7 @@ describe('overwriting output formats', function () {
     expect(() =>
       examples.generate({
         exportName: 'myPackage',
-        sources: ['examplesSrc/predefinedOutput.cjs.js'],
+        sources: [path.join('examplesSrc', 'predefinedOutput.cjs.js')],
         types: ['cjs', 'esm'],
       })
     ).toThrow('You need to specify a base JS file to convert from')
@@ -460,7 +489,7 @@ describe('overwriting output formats', function () {
     expect(() =>
       examples.generate({
         exportName: 'myPackage',
-        sources: ['examplesSrc/predefinedOutput.cjs.js'],
+        sources: [path.join('examplesSrc', 'predefinedOutput.cjs.js')],
         types: ['cjs'],
       })
     ).not.toThrow('You need to specify a base JS file to convert from')
@@ -478,7 +507,9 @@ describe('source analysis', function () {
       expect(() =>
         examples.generate({
           exportName: 'myPackage',
-          sources: ['examplesSrc/badExampleWithNoRequireStatements.js'],
+          sources: [
+            path.join('examplesSrc', 'badExampleWithNoRequireStatements.js'),
+          ],
           types: ['cjs'],
         })
       ).toThrow('No require statements found. Cannot convert to CommonJS.')
@@ -490,7 +521,9 @@ describe('source analysis', function () {
       expect(() =>
         examples.generate({
           exportName: 'myPackage',
-          sources: ['examplesSrc/badExampleWithNoRequireStatements.js'],
+          sources: [
+            path.join('examplesSrc', 'badExampleWithNoRequireStatements.js'),
+          ],
           types: ['iife'],
         })
       ).toThrow('No require statements found. Cannot convert to IIFE.')
@@ -528,35 +561,47 @@ const examples = new myPackage.exampleGenerator()`)
 
     examples.generate({
       exportName: 'myPackage',
-      sources: ['examplesSrc/multipleRequireStatements.js'],
+      sources: [path.join('examplesSrc', 'multipleRequireStatements.js')],
     })
 
     // JS output
     expect(
-      readFileSync('examples/cjs/multipleRequireStatements.js', 'utf-8')
+      readFileSync(
+        path.join('examples', 'cjs', 'multipleRequireStatements.js'),
+        'utf-8'
+      )
     ).toMatch(multipleJs.cjs)
     expect(
-      readFileSync('examples/esm/multipleRequireStatements.js', 'utf-8')
+      readFileSync(
+        path.join('examples', 'esm', 'multipleRequireStatements.js'),
+        'utf-8'
+      )
     ).toMatch(multipleJs.esm)
     expect(
-      readFileSync('examples/node-esm/multipleRequireStatements.js', 'utf-8')
+      readFileSync(
+        path.join('examples', 'node-esm', 'multipleRequireStatements.js'),
+        'utf-8'
+      )
     ).toMatch(multipleJs.nodeEsm)
     expect(
-      readFileSync('examples/iife/multipleRequireStatements.html', 'utf-8')
+      readFileSync(
+        path.join('examples', 'iife', 'multipleRequireStatements.html'),
+        'utf-8'
+      )
     ).toMatch(multipleJs.iife)
 
     // Markdown output
-    expect(readFileSync('examples/cjs/examples.md', 'utf-8')).toMatch(
-      multipleMd.cjs
-    )
-    expect(readFileSync('examples/esm/examples.md', 'utf-8')).toMatch(
-      multipleMd.esm
-    )
-    expect(readFileSync('examples/node-esm/examples.md', 'utf-8')).toMatch(
-      multipleMd.nodeEsm
-    )
-    expect(readFileSync('examples/iife/examples.md', 'utf-8')).toMatch(
-      multipleMd.iife
-    )
+    expect(
+      readFileSync(path.join('examples', 'cjs', 'examples.md'), 'utf-8')
+    ).toMatch(multipleMd.cjs)
+    expect(
+      readFileSync(path.join('examples', 'esm', 'examples.md'), 'utf-8')
+    ).toMatch(multipleMd.esm)
+    expect(
+      readFileSync(path.join('examples', 'node-esm', 'examples.md'), 'utf-8')
+    ).toMatch(multipleMd.nodeEsm)
+    expect(
+      readFileSync(path.join('examples', 'iife', 'examples.md'), 'utf-8')
+    ).toMatch(multipleMd.iife)
   })
 })

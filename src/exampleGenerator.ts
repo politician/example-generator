@@ -8,7 +8,7 @@ export class exampleGenerator {
 
   constructor(readonly basePath = './') {
     const pkg: string = readFileSync(
-      path.join(basePath, '/package.json'),
+      path.join(basePath, 'package.json'),
       'utf-8'
     )
     this.pkg = JSON.parse(pkg)
