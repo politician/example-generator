@@ -1,0 +1,29 @@
+# Using ES modules
+
+## Multiple require statements
+
+Include the example generator dependency
+
+```js
+import { formats } from 'example-generator'
+
+// You can also import from a specific file from your library
+import { exampleGenerator } from 'example-generator/dist/esm/exampleGenerator.js'
+```
+
+Use the example generator
+
+```js
+// Initialize object
+const examples = new exampleGenerator()
+
+// Generate examples
+examples.generate({
+  exportName: 'myPackage',
+  sources: [
+    'examplesSrc/basicExample.js',
+    'examplesSrc/basicExample.cjs.js',
+    'examplesSrc/advancedExample.js',
+  ],
+})
+```

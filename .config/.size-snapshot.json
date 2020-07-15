@@ -1,0 +1,44 @@
+{
+  "index.js": {
+    "bundled": 285,
+    "minified": 268,
+    "gzipped": 146,
+    "treeshaked": {
+      "rollup": {
+        "code": 246,
+        "import_statements": 246
+      },
+      "webpack": {
+        "code": 1428
+      }
+    }
+  },
+  "myModule.js": {
+    "bundled": 1292,
+    "minified": 923,
+    "gzipped": 415,
+    "treeshaked": {
+      "rollup": {
+        "code": 118,
+        "import_statements": 118
+      },
+      "webpack": {
+        "code": 1168
+      }
+    }
+  },
+  "exampleGenerator.js": {
+    "bundled": 11288,
+    "minified": 5951,
+    "gzipped": 2093,
+    "treeshaked": {
+      "rollup": {
+        "code": 216,
+        "import_statements": 216
+      },
+      "webpack": {
+        "code": 1365
+      }
+    }
+  }
+}

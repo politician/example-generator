@@ -1,0 +1,13 @@
+{
+  "collectCoverage": true,
+  "collectCoverageFrom": [
+    "<rootDir>/src/**/*.[jt]s?(x)"
+  ],
+  "coverageDirectory": ".coverage",
+  "verbose": true,
+  "testEnvironment": "node",
+  "rootDir": "../",
+  "testMatch": [
+    "<rootDir>/tests/**/*.[jt]s"
+  ]
+}
