@@ -5,6 +5,8 @@ updates:
     schedule:
       interval: 'daily'
     versioning-strategy: widen
+    commit-message:
+      prefix: Chore
     labels:
       - npm
       - dependencies
@@ -14,6 +16,8 @@ updates:
     directory: '/'
     schedule:
       interval: 'daily'
+    commit-message:
+      prefix: Chore
     labels:
       - github actions
       - dependencies
