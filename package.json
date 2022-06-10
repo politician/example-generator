@@ -95,7 +95,7 @@
     "rollup": "^2.21.0",
     "rollup-plugin-node-externals": "^2.2.0",
     "rollup-plugin-size-snapshot": "^0.12.0",
-    "semantic-release": "^17.1.1",
+    "semantic-release": "^19.0.3",
     "typescript": "^3.9.5"
   },
   "dependencies": {
